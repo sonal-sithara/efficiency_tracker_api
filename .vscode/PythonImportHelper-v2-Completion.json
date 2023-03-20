@@ -1,0 +1,353 @@
+[
+    {
+        "label": "hashlib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "hashlib",
+        "description": "hashlib",
+        "detail": "hashlib",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "Blueprint",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "importPath": "config",
+        "description": "config",
+        "isExtraImport": true,
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson.objectid",
+        "description": "bson.objectid",
+        "isExtraImport": true,
+        "detail": "bson.objectid",
+        "documentation": {}
+    },
+    {
+        "label": "ObjectId",
+        "importPath": "bson.objectid",
+        "description": "bson.objectid",
+        "isExtraImport": true,
+        "detail": "bson.objectid",
+        "documentation": {}
+    },
+    {
+        "label": "Task",
+        "importPath": "src.models.taskModel",
+        "description": "src.models.taskModel",
+        "isExtraImport": true,
+        "detail": "src.models.taskModel",
+        "documentation": {}
+    },
+    {
+        "label": "find_all",
+        "importPath": "src.controllers.userController",
+        "description": "src.controllers.userController",
+        "isExtraImport": true,
+        "detail": "src.controllers.userController",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "importPath": "src.models.userModel",
+        "description": "src.models.userModel",
+        "isExtraImport": true,
+        "detail": "src.models.userModel",
+        "documentation": {}
+    },
+    {
+        "label": "load_dotenv",
+        "importPath": "dotenv.main",
+        "description": "dotenv.main",
+        "isExtraImport": true,
+        "detail": "dotenv.main",
+        "documentation": {}
+    },
+    {
+        "label": "MongoClient",
+        "importPath": "pymongo",
+        "description": "pymongo",
+        "isExtraImport": true,
+        "detail": "pymongo",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "importPath": "src",
+        "description": "src",
+        "isExtraImport": true,
+        "detail": "src",
+        "documentation": {}
+    },
+    {
+        "label": "login",
+        "kind": 2,
+        "importPath": "src.controllers.authController",
+        "description": "src.controllers.authController",
+        "peekOfCode": "def login():\n    data = request.json\n    password = hashlib.sha256(data[\"password\"].encode(\n        'utf-8')).hexdigest()\n    result = db.users.find_one(\n        {'username': data['username'], 'password': password})\n    return json.dumps(result, default=str)",
+        "detail": "src.controllers.authController",
+        "documentation": {}
+    },
+    {
+        "label": "authCtrl",
+        "kind": 5,
+        "importPath": "src.controllers.authController",
+        "description": "src.controllers.authController",
+        "peekOfCode": "authCtrl = Blueprint('auth', __name__)\n@authCtrl.route('/login', methods=['GET'])\ndef login():\n    data = request.json\n    password = hashlib.sha256(data[\"password\"].encode(\n        'utf-8')).hexdigest()\n    result = db.users.find_one(\n        {'username': data['username'], 'password': password})\n    return json.dumps(result, default=str)",
+        "detail": "src.controllers.authController",
+        "documentation": {}
+    },
+    {
+        "label": "create_task",
+        "kind": 2,
+        "importPath": "src.controllers.taskController",
+        "description": "src.controllers.taskController",
+        "peekOfCode": "def create_task():\n    form = request.form\n    data = json.loads(form['data'])\n    if 'attachment' in request.files:\n        file = request.files['attachment']\n        filename = file.filename\n        file.save(os.path.join(os.environ['UPLOAD_FOLDER'], filename))\n    task = Task(data[\"id\"], data[\"name\"], data[\"desc\"],\n                data[\"submissionDate\"], filename)\n    result = db.tasks.insert_one(task.__dict__)",
+        "detail": "src.controllers.taskController",
+        "documentation": {}
+    },
+    {
+        "label": "start_task",
+        "kind": 2,
+        "importPath": "src.controllers.taskController",
+        "description": "src.controllers.taskController",
+        "peekOfCode": "def start_task():\n    data = request.json\n    result = db.tasks.update_one({'_id': ObjectId(data['id'])}, {\n        '$set': {'startTime': data['startTime'], 'lastStartTime': data['startTime'], 'isTaskStart': True}})\n    return json.dumps({'acknowledged': result.acknowledged}, default=str)\n@taskCtrl.route('/start_pause', methods=['POST'])\ndef start_pause_task():\n    data = request.json\n    result = db.tasks.update_one({'_id': ObjectId(data['id'])}, {\n        '$set': {'lastStartTime': data['startTime'], 'isPause': False}})",
+        "detail": "src.controllers.taskController",
+        "documentation": {}
+    },
+    {
+        "label": "start_pause_task",
+        "kind": 2,
+        "importPath": "src.controllers.taskController",
+        "description": "src.controllers.taskController",
+        "peekOfCode": "def start_pause_task():\n    data = request.json\n    result = db.tasks.update_one({'_id': ObjectId(data['id'])}, {\n        '$set': {'lastStartTime': data['startTime'], 'isPause': False}})\n    return json.dumps({'acknowledged': result.acknowledged}, default=str)\n@taskCtrl.route('/pause', methods=['POST'])\ndef pause_task():\n    data = request.json\n    doc = db.tasks.find_one({'_id': ObjectId(data[\"id\"])})\n    startTime = datetime.strptime(doc['lastStartTime'], \"%Y-%m-%d %H:%M:%S\")",
+        "detail": "src.controllers.taskController",
+        "documentation": {}
+    },
+    {
+        "label": "pause_task",
+        "kind": 2,
+        "importPath": "src.controllers.taskController",
+        "description": "src.controllers.taskController",
+        "peekOfCode": "def pause_task():\n    data = request.json\n    doc = db.tasks.find_one({'_id': ObjectId(data[\"id\"])})\n    startTime = datetime.strptime(doc['lastStartTime'], \"%Y-%m-%d %H:%M:%S\")\n    pauseTime = datetime.strptime(data['pauseTime'], \"%Y-%m-%d %H:%M:%S\")\n    time_diff = ((pauseTime - startTime).total_seconds() / 60.0) + \\\n        doc['spendTime']\n    result = db.tasks.update_one({'_id': ObjectId(data['id'])}, {\n        '$set': {'spendTime': time_diff, 'isPause': True}})\n    return json.dumps({'acknowledged': result.acknowledged}, default=str)",
+        "detail": "src.controllers.taskController",
+        "documentation": {}
+    },
+    {
+        "label": "end_task",
+        "kind": 2,
+        "importPath": "src.controllers.taskController",
+        "description": "src.controllers.taskController",
+        "peekOfCode": "def end_task():\n    data = request.json\n    doc = db.tasks.find_one({'_id': ObjectId(data[\"id\"])})\n    startTime = datetime.strptime(doc['lastStartTime'], \"%Y-%m-%d %H:%M:%S\")\n    endTime = datetime.strptime(data['endTime'], \"%Y-%m-%d %H:%M:%S\")\n    time_diff = ((endTime - startTime).total_seconds() / 60.0) + \\\n        doc['spendTime']\n    result = db.tasks.update_one({'_id': ObjectId(data['id'])}, {\n        '$set': {'spendTime': time_diff, 'isPause': True, 'isTaskComplete': True}})\n    return json.dumps({'acknowledged': result.acknowledged}, default=str)",
+        "detail": "src.controllers.taskController",
+        "documentation": {}
+    },
+    {
+        "label": "find_all",
+        "kind": 2,
+        "importPath": "src.controllers.taskController",
+        "description": "src.controllers.taskController",
+        "peekOfCode": "def find_all():\n    cursor = db.tasks.find()\n    result = [document for document in cursor]\n    return json.dumps(result, default=str)\n@taskCtrl.route('/find_by_user', methods=['GET'])\ndef find_by_user():\n    data = request.json\n    cursor = db.tasks.find({'userId': data['userId']})\n    result = [document for document in cursor]\n    return json.dumps(result, default=str)",
+        "detail": "src.controllers.taskController",
+        "documentation": {}
+    },
+    {
+        "label": "find_by_user",
+        "kind": 2,
+        "importPath": "src.controllers.taskController",
+        "description": "src.controllers.taskController",
+        "peekOfCode": "def find_by_user():\n    data = request.json\n    cursor = db.tasks.find({'userId': data['userId']})\n    result = [document for document in cursor]\n    return json.dumps(result, default=str)",
+        "detail": "src.controllers.taskController",
+        "documentation": {}
+    },
+    {
+        "label": "taskCtrl",
+        "kind": 5,
+        "importPath": "src.controllers.taskController",
+        "description": "src.controllers.taskController",
+        "peekOfCode": "taskCtrl = Blueprint('task', __name__)\n@taskCtrl.route('/create', methods=['POST'])\ndef create_task():\n    form = request.form\n    data = json.loads(form['data'])\n    if 'attachment' in request.files:\n        file = request.files['attachment']\n        filename = file.filename\n        file.save(os.path.join(os.environ['UPLOAD_FOLDER'], filename))\n    task = Task(data[\"id\"], data[\"name\"], data[\"desc\"],",
+        "detail": "src.controllers.taskController",
+        "documentation": {}
+    },
+    {
+        "label": "create_user",
+        "kind": 2,
+        "importPath": "src.controllers.userController",
+        "description": "src.controllers.userController",
+        "peekOfCode": "def create_user():\n    data = request.json\n    password = hashlib.sha256(data[\"password\"].encode(\n        'utf-8')).hexdigest()\n    user = User(data[\"name\"], password, data[\"email\"], data[\"role\"])\n    result = db.users.insert_one(user.__dict__)\n    return json.dumps({'userId': result.inserted_id}, default=str)\n@userCtrl.route('/update', methods=['PUT'])\ndef update_user():\n    data = request.json",
+        "detail": "src.controllers.userController",
+        "documentation": {}
+    },
+    {
+        "label": "update_user",
+        "kind": 2,
+        "importPath": "src.controllers.userController",
+        "description": "src.controllers.userController",
+        "peekOfCode": "def update_user():\n    data = request.json\n    result = db.users.update_one({'_id': ObjectId(data[\"id\"])}, {\n        '$set': {'role': data[\"role\"]}})\n    return json.dumps({'acknowledged': result.acknowledged}, default=str)\n@userCtrl.route('/', methods=['GET'])\ndef find_all():\n    cursor = db.users.find()\n    result = [document for document in cursor]\n    return json.dumps(result, default=str)",
+        "detail": "src.controllers.userController",
+        "documentation": {}
+    },
+    {
+        "label": "find_all",
+        "kind": 2,
+        "importPath": "src.controllers.userController",
+        "description": "src.controllers.userController",
+        "peekOfCode": "def find_all():\n    cursor = db.users.find()\n    result = [document for document in cursor]\n    return json.dumps(result, default=str)\n@userCtrl.route('/find', methods=['GET'])\ndef find_one():\n    data = request.json\n    result = db.users.find_one({'_id': ObjectId(data[\"id\"])})\n    return json.dumps(result, default=str)",
+        "detail": "src.controllers.userController",
+        "documentation": {}
+    },
+    {
+        "label": "find_one",
+        "kind": 2,
+        "importPath": "src.controllers.userController",
+        "description": "src.controllers.userController",
+        "peekOfCode": "def find_one():\n    data = request.json\n    result = db.users.find_one({'_id': ObjectId(data[\"id\"])})\n    return json.dumps(result, default=str)",
+        "detail": "src.controllers.userController",
+        "documentation": {}
+    },
+    {
+        "label": "userCtrl",
+        "kind": 5,
+        "importPath": "src.controllers.userController",
+        "description": "src.controllers.userController",
+        "peekOfCode": "userCtrl = Blueprint('user', __name__)\n@userCtrl.route('/create', methods=['POST'])\ndef create_user():\n    data = request.json\n    password = hashlib.sha256(data[\"password\"].encode(\n        'utf-8')).hexdigest()\n    user = User(data[\"name\"], password, data[\"email\"], data[\"role\"])\n    result = db.users.insert_one(user.__dict__)\n    return json.dumps({'userId': result.inserted_id}, default=str)\n@userCtrl.route('/update', methods=['PUT'])",
+        "detail": "src.controllers.userController",
+        "documentation": {}
+    },
+    {
+        "label": "Task",
+        "kind": 6,
+        "importPath": "src.models.taskModel",
+        "description": "src.models.taskModel",
+        "peekOfCode": "class Task:\n    def __init__(self, userId, taskName, desc,  submissionDate, attachment=None, isTaskComplete=False, isTaskStart=False, isPause=False, startTime=None, lastStartTime=None, endTime=None, spendTime=0):\n        self.userId = userId\n        self.taskName = taskName\n        self.desc = desc\n        self.submissionDate = submissionDate\n        self.attachment = attachment\n        self.isTaskComplete = isTaskComplete\n        self.isTaskStart = isTaskStart\n        self.isPause = isPause",
+        "detail": "src.models.taskModel",
+        "documentation": {}
+    },
+    {
+        "label": "User",
+        "kind": 6,
+        "importPath": "src.models.userModel",
+        "description": "src.models.userModel",
+        "peekOfCode": "class User:\n    def __init__(self, username, password, email, role):\n        self.username = username\n        self.password = password\n        self.email = email\n        self.role = role",
+        "detail": "src.models.userModel",
+        "documentation": {}
+    },
+    {
+        "label": "MONGODB_URI",
+        "kind": 5,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "MONGODB_URI = os.environ['MONGODB_URI']\nclient = MongoClient(MONGODB_URI)\ndb = client.efficient_tracker",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "client",
+        "kind": 5,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "client = MongoClient(MONGODB_URI)\ndb = client.efficient_tracker",
+        "detail": "config",
+        "documentation": {}
+    },
+    {
+        "label": "db",
+        "kind": 5,
+        "importPath": "config",
+        "description": "config",
+        "peekOfCode": "db = client.efficient_tracker",
+        "detail": "config",
+        "documentation": {}
+    }
+]
