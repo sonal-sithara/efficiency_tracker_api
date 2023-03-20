@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 from src.controllers.taskController import taskCtrl
 from src.controllers.userController import userCtrl
@@ -6,6 +7,8 @@ from src.controllers.authController import authCtrl
 
 
 app = Flask(__name__)
+cors = CORS(app)
+
 
 app.register_blueprint(userCtrl, url_prefix='/user')
 app.register_blueprint(taskCtrl, url_prefix='/task')
