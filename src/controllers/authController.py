@@ -8,7 +8,7 @@ from config import db
 authCtrl = Blueprint('auth', __name__)
 
 
-@authCtrl.route('/login', methods=['GET'])
+@authCtrl.route('/login', methods=['POST'])
 def login():
     data = request.json
 
