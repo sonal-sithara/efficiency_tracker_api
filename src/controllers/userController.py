@@ -32,7 +32,7 @@ def update_user():
 
 @userCtrl.route('/', methods=['GET'])
 def find_all():
-    cursor = db.users.find()
+    cursor = db.users.find({'role':'Employee'})
     result = [document for document in cursor]
     return json.dumps(result, default=str)
 
