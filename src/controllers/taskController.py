@@ -23,7 +23,7 @@ def create_task():
         filename = file.filename
         file.save(os.path.join(os.environ['UPLOAD_FOLDER'], filename))
 
-    task = Task(data["id"], data["name"], data["desc"],
+    task = Task(data["userId"], data["taskName"], data["desc"],
                 data["submissionDate"], filename)
 
     result = db.tasks.insert_one(task.__dict__)
