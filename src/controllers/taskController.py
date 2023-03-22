@@ -22,7 +22,8 @@ def create_task():
 
         filename = file.filename
         file.save(os.path.join(os.environ['UPLOAD_FOLDER'], filename))
-
+    else:
+        filename = None
     task = Task(data["userId"], data["taskName"], data["desc"],
                 data["submissionDate"], filename)
 
@@ -82,7 +83,7 @@ def end_task():
         doc['spendTime']
 
     result = db.tasks.update_one({'_id': ObjectId(data['id'])}, {
-        '$set': {'spendTime': time_diff, 'isPause': True, 'isTaskComplete': True}})
+        '$set': {'spendTime': time_diff, 'isPause': False, 'isTaskStart': False, 'isTaskComplete': True}})
 
     return json.dumps({'acknowledged': result.acknowledged}, default=str)
 
@@ -96,8 +97,13 @@ def find_all():
 
 @taskCtrl.route('/find_by_user', methods=['GET'])
 def find_by_user():
-    data = request.json
+    data = request.args.get('user')
 
-    cursor = db.tasks.find({'userId': data['userId']})
+    cursor = db.tasks.find({'userId': data})
     result = [document for document in cursor]
+    env_var = os.environ.get('UPLOAD_FOLDER')
+
+    # Add env_var key-value pair to each document in the result array
+    for document in result:
+        document['path_to_file'] = env_var
     return json.dumps(result, default=str)
