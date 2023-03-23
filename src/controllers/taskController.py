@@ -61,7 +61,7 @@ def pause_task():
     startTime = datetime.strptime(doc['lastStartTime'], "%Y-%m-%d %H:%M:%S")
     pauseTime = datetime.strptime(data['pauseTime'], "%Y-%m-%d %H:%M:%S")
 
-    time_diff = ((pauseTime - startTime).total_seconds() / 60.0) + \
+    time_diff = ((pauseTime - startTime).total_seconds()) + \
         doc['spendTime']
 
     result = db.tasks.update_one({'_id': ObjectId(data['id'])}, {
@@ -79,11 +79,11 @@ def end_task():
     startTime = datetime.strptime(doc['lastStartTime'], "%Y-%m-%d %H:%M:%S")
     endTime = datetime.strptime(data['endTime'], "%Y-%m-%d %H:%M:%S")
 
-    time_diff = ((endTime - startTime).total_seconds() / 60.0) + \
+    time_diff = ((endTime - startTime).total_seconds()) + \
         doc['spendTime']
 
     result = db.tasks.update_one({'_id': ObjectId(data['id'])}, {
-        '$set': {'spendTime': time_diff, 'isPause': False, 'isTaskStart': False, 'isTaskComplete': True}})
+        '$set': {'spendTime': time_diff, 'endTime': endTime, 'isPause': False, 'isTaskStart': False, 'isTaskComplete': True}})
 
     return json.dumps({'acknowledged': result.acknowledged}, default=str)
 
