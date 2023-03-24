@@ -25,8 +25,10 @@ def create_user():
 @userCtrl.route('/update', methods=['PUT'])
 def update_user():
     data = request.json
+    password = hashlib.sha256(data["password"].encode(
+        'utf-8')).hexdigest()
     result = db.users.update_one({'_id': ObjectId(data["id"])}, {
-        '$set': {'role': data["role"]}})
+        '$set': {'username': data["name"],'email': data["email"],'password': password}})
     return json.dumps({'acknowledged': result.acknowledged}, default=str)
 
 
@@ -39,6 +41,6 @@ def find_all():
 
 @userCtrl.route('/find', methods=['GET'])
 def find_one():
-    data = request.json
-    result = db.users.find_one({'_id': ObjectId(data["id"])})
+    data = request.args.get('user')
+    result = db.users.find_one({'_id': ObjectId(data)})
     return json.dumps(result, default=str)
