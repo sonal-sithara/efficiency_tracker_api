@@ -107,3 +107,46 @@ def find_by_user():
     for document in result:
         document['path_to_file'] = env_var
     return json.dumps(result, default=str)
+
+
+@taskCtrl.route('/find_by_status', methods=['GET'])
+def find_by_status():
+    data = request.args.get('user')
+
+    cursor = db.tasks.find({'userId': data, 'isTaskComplete': True, 'submitted':False})
+    result = [document for document in cursor]
+
+    return json.dumps(result, default=str)
+
+
+@taskCtrl.route('/find_by_id', methods=['GET'])
+def find_by_id():
+    data = request.args.get('id')
+
+    result = db.tasks.find_one({'_id':  ObjectId(data)})
+
+    return json.dumps(result, default=str)
+
+
+@taskCtrl.route('/update_feedback', methods=['PUT'])
+def update_feedback():
+    data = request.get_json()
+    task_id = data['id']
+    feedback = data['feedback']
+
+    result = db.tasks.update_one({'_id': ObjectId(task_id)}, {
+                                 '$set': {'feedback': feedback}})
+
+    return json.dumps({'acknowledged': result.acknowledged}, default=str)
+
+
+@taskCtrl.route('/additional_info', methods=['PUT'])
+def additional_info():
+    data = request.get_json()
+    task_id = data['id']
+    info = data['info']
+
+    result = db.tasks.update_one({'_id': ObjectId(task_id)}, {
+                                 '$set': {'additionalInfo': info, 'submitted': True}})
+
+    return json.dumps({'acknowledged': result.acknowledged}, default=str)
