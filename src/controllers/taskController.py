@@ -14,18 +14,10 @@ taskCtrl = Blueprint('task', __name__)
 
 @taskCtrl.route('/create', methods=['POST'])
 def create_task():
-    form = request.form
-    data = json.loads(form['data'])
+    data = request.json
 
-    if 'attachment' in request.files:
-        file = request.files['attachment']
-
-        filename = file.filename
-        file.save(os.path.join(os.environ['UPLOAD_FOLDER'], filename))
-    else:
-        filename = None
     task = Task(data["userId"], data["taskName"], data["desc"],
-                data["submissionDate"], filename)
+                data["submissionDate"], data["attachment"])
 
     result = db.tasks.insert_one(task.__dict__)
 
@@ -113,7 +105,8 @@ def find_by_user():
 def find_by_status():
     data = request.args.get('user')
 
-    cursor = db.tasks.find({'userId': data, 'isTaskComplete': True, 'submitted':False})
+    cursor = db.tasks.find(
+        {'userId': data, 'isTaskComplete': True, 'submitted': False})
     result = [document for document in cursor]
 
     return json.dumps(result, default=str)
@@ -145,8 +138,9 @@ def additional_info():
     data = request.get_json()
     task_id = data['id']
     info = data['info']
-
+    submittedFiles = data['submittedFiles']
+    
     result = db.tasks.update_one({'_id': ObjectId(task_id)}, {
-                                 '$set': {'additionalInfo': info, 'submitted': True}})
+                                 '$set': {'additionalInfo': info, 'submittedFiles': submittedFiles, 'submitted': True}})
 
     return json.dumps({'acknowledged': result.acknowledged}, default=str)
